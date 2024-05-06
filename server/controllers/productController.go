@@ -3,9 +3,10 @@ package controllers
 import (
 	"backend/models"
 	"errors"
+	"net/http"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
-	"net/http"
 )
 
 type ProductController struct {
