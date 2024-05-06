@@ -34,14 +34,14 @@ func (pc *PaymentController) MakePayment(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid payment amount"})
 	}
 
-	if payment.CardNumber == "" || payment.ExpiryDate == "" || isExpired(payment.ExpiryDate) {
+	if payment.CardNumber == "" || payment.ExpiryDate == "" || isDateExpired(payment.ExpiryDate) {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "bad card"})
 	}
 
 	return c.JSON(http.StatusOK, map[string]string{"message": "payment successful"})
 }
 
-func isExpired(dateStr string) bool {
+func isDateExpired(dateStr string) bool {
 	parsedDate, err := time.Parse("01/06", dateStr)
 	if err != nil {
 		fmt.Println("Error parsing date:", err)
