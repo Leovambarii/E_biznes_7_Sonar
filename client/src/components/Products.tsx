@@ -7,24 +7,25 @@ const Products: React.FC = () => {
   const { cart, addProductToCart, removeProductFromCart } = useCart();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      fetch('http://localhost:8080/products')
-        .then(response => response.json())
-        .then(data => {
-          const convertedProducts: Product[] = data.map((item: any) => ({
-            id: item.ID,
-            name: item.name,
-            description: item.description,
-            price: item.price,
-            quantity: 0
-          }));
-          setProducts(convertedProducts);
-        })
-        .catch(error => console.error('Error fetching products:', error));
-    }
-    
     fetchProducts();
   }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/products');
+      const data = await response.json();
+      const convertedProducts: Product[] = data.map((item: any) => ({
+        id: item.ID,
+        name: item.name,
+        description: item.description,
+        price: item.price,
+        quantity: 0
+      }));
+      setProducts(convertedProducts);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
 
   const isInCart = (productId: number) => {
     return cart.some((product: Product) => product.id === productId);
